@@ -1,4 +1,5 @@
 #include "binary_trees.h"
+int is_perfectly_balanced(const binary_tree_t *tree);
 
 /**
  * binary_tree_height - calculate the height of a binary tree
@@ -31,9 +32,12 @@ int binary_tree_balance(const binary_tree_t *tree)
 		return (0);
 
 	if (tree->left && !tree->right)
-		return (1);
+		return (1 + binary_tree_height(tree->left) -
+			binary_tree_height(tree->right));
+
 	if (tree->right && !tree->left)
-		return (-1);
+		return (binary_tree_height(tree->left) -
+			(binary_tree_height(tree->right) + 1));
 
 	return (binary_tree_height(tree->left) -
 			binary_tree_height(tree->right));
@@ -67,7 +71,27 @@ int binary_tree_is_perfect(const binary_tree_t *tree)
 		return (0);
 
 	if ((binary_tree_is_full(tree)) &&
-			binary_tree_balance(tree) == 0)
+			is_perfectly_balanced(tree) == 0)
 		return (1);
 	return (0);
+}
+
+/**
+ * is_perfectly_balanced - checks if all subtrees have a balance
+ * factor of 0
+ * @tree: root of the tree
+ *
+ * Return: 0 if perfectly balanced, else 1
+ */
+int is_perfectly_balanced(const binary_tree_t *tree)
+{
+	int result;
+
+	if (!tree || (!tree->right && !tree->left))
+		return (0);
+
+	result = binary_tree_balance(tree) || is_perfectly_balanced(tree->left);
+	result += binary_tree_balance(tree) || is_perfectly_balanced(tree->right);
+
+	return (result);
 }

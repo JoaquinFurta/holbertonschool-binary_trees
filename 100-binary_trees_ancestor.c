@@ -15,6 +15,14 @@ binary_tree_t *binary_trees_ancestor(const binary_tree_t *first,
 	if (!first || !second)
 		return (NULL);
 
+	if (first == second)
+	{ /* Can't return first or second since it's const binary_tree_t */
+		i = first->parent;
+		if (first == i->left)
+			return (i->left);
+		return (i->right);
+	}
+
 	for (i = first->parent; i; i = i->parent)
 	{
 		if (i == second)

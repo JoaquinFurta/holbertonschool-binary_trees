@@ -64,6 +64,8 @@ int binary_tree_is_complete(const binary_tree_t *tree)
 	ar = malloc(sizeof(int) * max_nodes);
 	if (!ar)
 		exit(98);
+	for (i = 0; (unsigned int) i < max_nodes; i++)
+		ar[i] = 2;
 
 	for (i = 0, j = 0; (unsigned int) i <= height; i++)
 		level_order(tree, i, &j, ar);

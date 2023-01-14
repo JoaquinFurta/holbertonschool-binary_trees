@@ -51,8 +51,9 @@ int recursive_comparison(const binary_tree_t *root,
 		return (0);
 	if (!branch)
 		return (1);
+	
 
-	if (direction == (root->n > branch->n))
+	if (direction == (root->n > branch->n) && root->n != branch->n)
 	{
 		return (recursive_comparison(root, branch->right, direction) &&
 				recursive_comparison(root, branch->left, direction));

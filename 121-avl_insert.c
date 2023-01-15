@@ -18,11 +18,6 @@ avl_t *avl_insert(avl_t **tree, int value)
 	new = (avl_t *) bst_insert(tree, value);
 	if (!new)
 		return (NULL);
-	if (value == 234)
-	{
-		printf("After BST insert:\n");
-		binary_tree_print((const binary_tree_t *) *tree);
-	}
 	for (tmp = new->parent; tmp; tmp = tmp->parent)
 	{
 		balance = binary_tree_balance(tmp);

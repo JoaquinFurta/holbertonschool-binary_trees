@@ -12,27 +12,40 @@ bst_t *insertBST(int value, bst_t *where, bst_t *parent);
  */
 avl_t *avl_insert(avl_t **tree, int value)
 {
-	avl_t *new, *tmp;
+	avl_t *new, *tmp, *aux = NULL;
 	int balance;
 
 	new = (avl_t *) bst_insert(tree, value);
 	if (!new)
 		return (NULL);
+	if (value == 234)
+	{
+		printf("After BST insert:\n");
+		binary_tree_print((const binary_tree_t *) *tree);
+	}
 	for (tmp = new->parent; tmp; tmp = tmp->parent)
 	{
 		balance = binary_tree_balance(tmp);
 		if (balance > 1) /* Have to rotate tree left */
 		{
-			if (tmp->left->right)
+			if (tmp->left->right) /* Have to rotate twice */
 				binary_tree_rotate_left(tmp->left);
-			binary_tree_rotate_right(tmp);
+
+			aux = binary_tree_rotate_right(tmp);
+
+			if (tmp == *tree) /* Check to see if we have to change root */
+				*tree = aux;
 			return (new);
 		}
 		else if (balance < -1) /* Have to rotate tree right */
 		{
-			if (tmp->right->left)
+			if (tmp->right->left) /* Have to rotate twice */
 				binary_tree_rotate_right(tmp->right);
-			binary_tree_rotate_left(tmp);
+
+			aux = binary_tree_rotate_left(tmp);
+
+			if (tmp == *tree) /* Check to see if we have to change root */
+				*tree = aux;
 			return (new);
 		}
 	}

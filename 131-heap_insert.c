@@ -5,6 +5,7 @@
 #define MAX(x, y) ((x) > (y) ? (x) : (y))
 heap_t *InsertAtIndex(binary_tree_t *tree, unsigned int index, int value);
 heap_t *SiftUp(heap_t *node, heap_t **tree);
+int heap_search(heap_t *heap, int value);
 
 /**
  * heap_insert - insert a node in a max heap
@@ -16,7 +17,7 @@ heap_t *SiftUp(heap_t *node, heap_t **tree);
 heap_t *heap_insert(heap_t **root, int value)
 {
 	heap_t *new;
-	int size;
+	int size, is_in_heap;
 
 	if (!root)
 		return (NULL);
@@ -27,10 +28,14 @@ heap_t *heap_insert(heap_t **root, int value)
 		return (new);
 	}
 
+	is_in_heap = heap_search(*root, value);
+	if (is_in_heap)
+		return (NULL);
+
 	size = binary_tree_size(*root); /* Index of new node should be = size */
 	new = InsertAtIndex(*root, size, value);
 
-	SiftUp(new, root);
+	new = SiftUp(new, root);
 	return (new);
 }
 
@@ -157,3 +162,20 @@ size_t binary_tree_size(const binary_tree_t *tree)
 	return (1 + binary_tree_size(tree->left) + binary_tree_size(tree->right));
 }
 
+/**
+ * heap_search - search for a node in a max heap tree
+ * @heap: root of the heap
+ * @value: value we're searching for
+ *
+ * Return: 1 if found else 0
+ */
+int heap_search(heap_t *heap, int value)
+{
+	if (!heap)
+		return (0);
+	if (heap->n > value)
+		return (heap_search(heap->left, value) || heap_search(heap->right, value));
+	if (heap->n < value)
+		return (0);
+	return (1);
+}

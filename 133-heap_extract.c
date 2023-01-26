@@ -128,23 +128,29 @@ heap_t *findNodeAtIndex(heap_t *root, unsigned int index)
 
 
 /**
- * binary_tree_node - creates a binary tree node
- * @parent: pointer to the parent node of the node to create
- * @value: value to put in the new node
- * Return: a pointer to te new node if succed, NULL if it fails
-*/
-binary_tree_t *binary_tree_node(binary_tree_t *parent, int value)
+ * binary_tree_size - get the size of a binary tree
+ *
+ * @tree: pointer to root of the tree
+ *
+ * Return: size of binary tree
+ */
+size_t binary_tree_size(const binary_tree_t *tree)
 {
-	binary_tree_t *new_node;
+	if (!tree)
+		return (0);
+	return (1 + binary_tree_size(tree->left) + binary_tree_size(tree->right));
+}
 
-	new_node = malloc(sizeof(binary_tree_t));
-	if (!new_node)
-		return (NULL);
-
-	new_node->n = value;
-	new_node->parent = parent;
-	new_node->left = NULL;
-	new_node->right = NULL;
-
-	return (new_node);
+/**
+ * binary_tree_height - calculate the height of a binary tree
+ * @tree: root node
+ *
+ * Return: height
+ */
+size_t binary_tree_height(const binary_tree_t *tree)
+{
+	if (!tree || (!tree->left && !tree->right))
+		return (0);
+	return (MAX(1 + binary_tree_height(tree->left),
+			1 + binary_tree_height(tree->right)));
 }

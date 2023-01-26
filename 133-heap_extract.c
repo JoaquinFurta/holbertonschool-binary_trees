@@ -22,6 +22,11 @@ int heap_extract(heap_t **root)
 
 	ret_value = (*root)->n;
 	size = binary_tree_size((const binary_tree_t *) *root);
+	if (size == 1)
+	{
+		free(*root);
+		return (ret_value);
+	}
 	node_to_del = findNodeAtIndex(*root, size - 1);
 
 	(*root)->n = node_to_del->n;

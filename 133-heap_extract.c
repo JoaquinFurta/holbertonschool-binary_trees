@@ -25,6 +25,7 @@ int heap_extract(heap_t **root)
 	if (size == 1)
 	{
 		free(*root);
+		root = NULL;
 		return (ret_value);
 	}
 	node_to_del = findNodeAtIndex(*root, size - 1);
